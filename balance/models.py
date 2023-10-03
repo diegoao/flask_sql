@@ -28,7 +28,7 @@ class DBManager:
         datos = cursor.fetchall()  # le decimos que recoja todos los datos en una lista
 
         # 4.2 Los guardo localmente
-        self.movimientos = []
+        self.registros = []
         nombres_columna = []
         for columna in cursor.description:  # nos da info sobre cada columna que nos ha devuelto
             nombres_columna.append(columna[0])  # nombres de la columna
@@ -39,11 +39,32 @@ class DBManager:
             for nombre in nombres_columna:  # recorremos los nombres de columna
                 movimiento[nombre] = dato[indice]
                 indice += 1
-            self.movimientos.append(movimiento)
+            self.registros.append(movimiento)
 
         # 5. Cerrar la conexión
         conexion.close()  # cerramos la conexión es muy importante
 
         # 6. Devolver los resultados
 
-        return nombres_columna
+        return self.registros
+
+    def borrar(self, id):
+        """
+        DELETE FROM movimientos WHERE id = ?
+        """
+        sql = 'DELETE FROM movimientos WHERE id=?'
+        conexion = sqlite3.connect(self.ruta)
+        cursor = conexion.cursor()
+
+        resultado = False
+        try:
+            # se añade coma para que lo detecte como tupla
+            cursor.execute(sql, (id,))
+            conexion.commit()  # se hace para guardar la ultima operacion
+            resultado = True
+        except:
+            conexion.rollback()  # dejamos todo como estaba antes de hacer el execute si hay error
+
+        conexion.close()
+
+        return resultado

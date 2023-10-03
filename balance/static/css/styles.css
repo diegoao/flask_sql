@@ -79,3 +79,16 @@ p.error {
 tr.error+tr {
     padding-bottom: 13px;
 }
+
+
+.mini-boton {
+    border: solid thin darkgray;
+    border-radius: 4px;
+    padding: 0 3px;
+    background-color: lightgray;
+}
+
+
+a.mini-boton:hover {
+    text-decoration: none;
+}
