@@ -1,10 +1,8 @@
 {% extends "base.html" %}
 
-
-{% block head_title %}
-{{ super() }}:Inicio
+{% block head_title%}
+{{ super() }}: Inicio
 {% endblock head_title %}
-
 
 {% block contenido %}
 <table class="paper">
@@ -35,7 +33,8 @@
         </td>
         <td class="numero">{{ m.cantidad }}</td>
         <td class="acciones">
-            <a href="/borrar/{{m.id}}" class="mini-boton">&times;</a>
+            <a href="/borrar/{{ m.id }}" class="mini-boton">&times;</a>
+            <a href="/editar/{{ m.id }}" class="mini-boton2">&times;</a>
         </td>
     </tr>
     {% if m.has_errors %}
@@ -55,5 +54,4 @@
     </tr>
     {% endif %}
 </table>
-
-{% endblock %}
+{% endblock contenido %}

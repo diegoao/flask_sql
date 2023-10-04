@@ -82,6 +82,21 @@ tr.error+tr {
 
 
 .mini-boton {
+    border: solid thin darkred;
+    border-radius: 4px;
+    padding: 0 3px;
+    background-color: darkred;
+    margin-left: 15px;
+    margin-right: 5px;
+}
+
+
+a.mini-boton:hover {
+    text-decoration: none;
+}
+
+
+.mini-boton2 {
     border: solid thin darkgray;
     border-radius: 4px;
     padding: 0 3px;
@@ -89,6 +104,6 @@ tr.error+tr {
 }
 
 
-a.mini-boton:hover {
+a.mini-boton2:hover {
     text-decoration: none;
 }
