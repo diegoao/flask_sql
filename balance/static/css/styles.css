@@ -124,3 +124,26 @@ a.mini-boton:hover {
     margin-right: 30px;
 
 }
+
+.lista-errores {
+    background-color: rgba(255, 0, 0, .3);
+    padding: 16px;
+    color: #600;
+    border-radius: 4px;
+}
+
+.mensaje-error {
+    color: #600;
+    font-weight: bold;
+}
+
+.exito-flash {
+    font-size: 1rem;
+    background-color: rgba(0, 200, 0, .25);
+    padding: 2rem;
+    color: darkgreen;
+    font-weight: bold;
+    border-radius: 4px;
+    display: flex;
+    gap: 1rem;
+}

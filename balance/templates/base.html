@@ -15,6 +15,21 @@
     {% include 'components/navbar.html' %}
 
     <main>
+        {% with mensajes = get_flashed_messages() %}
+        {% if mensajes %}
+        <div class="exito-flash">
+
+            <div class="mensajes-flash">
+                {% for msg in mensajes %}
+                <p>{{ msg }}</p>
+                {% endfor %}
+
+            </div>
+
+
+        </div>
+        {% endif %}
+        {% endwith %}
         {% block page_title%}
         <h1>App de movimientos</h1>
         {% endblock page_title %}

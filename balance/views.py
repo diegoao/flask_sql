@@ -1,6 +1,6 @@
+from datetime import date
 
-
-from flask import render_template, request
+from flask import flash, redirect, render_template, request, url_for
 
 from . import RUTA, app
 from .forms import MovimientoForm
@@ -24,6 +24,11 @@ def home():
 def eliminar(id):
     db = DBManager(RUTA)
     ha_ido_bien = db.borrar(id)
+    # TODO: en lugar de pintar el mensake con su propia plantillam usar un mensaje flash  y volver al listado
+    # TODO: un poco más dificil? pedir confirmación antes de eliminar un movimiento:
+    # - Incluir un texto con la pregunta
+    # - Incluir un botón aceptar que hace la eliminación y vuelve al listado(con mensaje flash)
+    # - Incluir un botón cancelar que vuelve al inicio sin eliminar el movimiento
     return render_template('borrado.html', resultado=ha_ido_bien)
 
 
@@ -51,6 +56,31 @@ def actualizar(id):
     if request.method == 'POST':
         form = MovimientoForm(datra=request.form)
         if form.validate():
+            db = DBManager(RUTA)
+            consulta = 'UPDATE movimientos SET fecha=?, concepto=?, tipo=?, cantidad=? WHERE id=?'
+            parametros = (
+                form.fecha.data,
+                form.concepto.data,
+                form.tipo.data,
+                float(form.cantidad.data),
+                form.id.data
+            )
+            resultado = db.consultaConParametros(consulta, parametros)
+            if resultado:
+                flash('El movimiento se ha actualizado correctamente',
+                      category="exito")
+                return redirect(url_for('home'))
             return "Guardar el movimiento"
         else:
-            return "Los datos no son correctos.(Volver al formulario)"
+            # TODO: pintar los mensakes de error junto al campo que lo provoca
+            errores = []
+            for key in form.errors:
+                errores.append((key, form.errors[key]))
+            return render_template('form_movimiento.html', form=formulario, id=id, errors=errores)
+
+
+@app.route('/nuevo')
+def crear_movimiento():
+    # TODO: reutilizar el formulario para crear movimientos nuevo coger el post y el get
+    consulta = 'INSERT INTO movimientos (fecha, concepto, tipo, cantidad) VALUES(?,?,?,?)'
+    pass

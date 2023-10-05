@@ -114,7 +114,8 @@ class DBManager:
             cursor.execute(consulta, params)
             conexion.commit
             resultado = True
-        except:
+        except Exception as ex:
+            print(ex)
             conexion.rollback()  # Volver atrás si hay un error
         self.desconectar(conexion)
         return resultado

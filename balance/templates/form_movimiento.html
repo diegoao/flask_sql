@@ -2,6 +2,24 @@
 
 {% block contenido %}
 
+{% if errors %}
+<p>Hay errores</p>
+<pre>{{ errors }}</pre>
+
+{% for error in errors %}
+<div class="lista-errores"> Hay errores en el campo{{ error[0] }}
+    <ul>
+        {% for msg in error[1] %}
+        <li class="mensaje-error"> {{ msg }}</li>
+        {% endfor %}
+
+
+    </ul>
+</div>
+
+{% endfor %}
+{% endif %}
+
 <form action="/editar/{{ id }}" method="post" novalidate>
     {{ form.csrf_token }}
 
