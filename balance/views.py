@@ -34,13 +34,14 @@ def actualizar(id):
         # SELECT id, fecha, concepto, tipo, cantidad FROM movimientos WHERE id=?
         # TODO: acceder aquí por un enlace en la lista de movimientos
         # (al lado del botón eliminar)
-        movimiento = {
-            'id': 55,
-            'fecha': date.fromisoformat('2023-10-03'),
-            'concepto': 'Curso de formularios en Python',
-            'tipo': 'I',
-            'cantidad': 55.955874587
-        }
+        db = DBManager(RUTA)
+        # sql = 'SELECT id, fecha, concepto, tipo, cantidad FROM movimientos WHERE id=?'
+        sql = f'SELECT id, fecha, concepto, tipo, cantidad FROM movimientos WHERE id={id}'
+        datos = db.consultaSQL(sql)
+        datos = datos[0]
+        datos['fecha'] = date.fromisoformat(datos['fecha'])
+        movimiento = datos
+
         formulario = MovimientoForm(data=movimiento)
         return render_template('form_movimiento.html', form=formulario)
     return f'TODO: tratar el método POST para actualizar el movimiento {id}'
