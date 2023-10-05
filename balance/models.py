@@ -1,4 +1,7 @@
+from datetime import date
 import sqlite3
+
+
 """
 SELECT ID, FECHA,  CONCEPTO, TIPO, CANTIDAD FROM movimientos
 """
@@ -11,6 +14,16 @@ class DBManager:
 
     def __init__(self, ruta):
         self.ruta = ruta
+
+    def conectar(self):
+        # 1. Conectar a la nase de datos
+        conexion = sqlite3.connect(self.ruta)
+        # 2. Abrir cursor
+        cursor = conexion.cursor()
+        return conexion, cursor
+
+    def desconectar(self, conexion):
+        conexion.close()
 
     def consultaSQL(self, consulta):
 
@@ -67,4 +80,41 @@ class DBManager:
 
         conexion.close()
 
+        return resultado
+
+    def obtenerMovimiento(self, id):
+        consulta = 'SELECT id, fecha, concepto, tipo, cantidad FROM movimientos WHERE id=?'
+
+        conexion, cursor = self.conectar()
+        cursor = conexion.cursor()
+        #  Le pasamos el parámetro que queremos en la consulta
+        cursor.execute(consulta, (id,))
+        datos = cursor.fetchone()  # Cogemos solo un elemento si queremos todos fetchall
+        resultado = None
+        if datos:
+            nombres_columna = []
+            for columna in cursor.description:  # nos da info sobre cada columna que nos ha devuelto
+                nombres_columna.append(columna[0])  # nombres de la columna
+                movimiento = {}  # generamos diccionario vacío
+            indice = 0
+            for nombre in nombres_columna:  # recorremos los nombres de columna
+                movimiento[nombre] = datos[indice]
+                indice += 1
+            movimiento['fecha'] = date.fromisoformat(movimiento['fecha'])
+            resultado = movimiento
+        self.desconectar(conexion)
+        return resultado
+
+    # se hace generica para sustituir el borrar
+    def consultaConParametros(self, consulta, params):
+        conexion, cursor = self.conectar()
+
+        resultado = False
+        try:
+            cursor.execute(consulta, params)
+            conexion.commit
+            resultado = True
+        except:
+            conexion.rollback()  # Volver atrás si hay un error
+        self.desconectar(conexion)
         return resultado

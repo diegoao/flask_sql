@@ -80,13 +80,27 @@ tr.error+tr {
     padding-bottom: 13px;
 }
 
+A:link.delete,
+a:visited.delete,
+a:active.delete,
+a.delete {
+    color: red;
+}
+
+A:link.update,
+a:visited.update,
+a:active.update,
+a.update {
+    color: green;
+}
+
 
 .mini-boton {
-    border: solid thin darkred;
+    border: solid thin darkgrey;
     border-radius: 4px;
     padding: 0 3px;
-    background-color: darkred;
-    margin-left: 25px;
+    background-color: lightgrey;
+    margin-left: 10px;
     margin-right: 5px;
 }
 
@@ -95,15 +109,18 @@ a.mini-boton:hover {
     text-decoration: none;
 }
 
+/*ESTILOS DEL FORMULARIO */
 
-.mini-boton2 {
-    border: solid thin darkgray;
-    border-radius: 4px;
-    padding: 0 3px;
-    background-color: lightgray;
+.campo-formulario label {
+    display: block;
+    padding: 0;
+    margin-top: 30px;
+    margin-bottom: 8px;
+    font-size: 1rem;
 }
 
+.campo-formulario>input[type="radio"]~label {
+    display: inline-block;
+    margin-right: 30px;
 
-a.mini-boton2:hover {
-    text-decoration: none;
 }
