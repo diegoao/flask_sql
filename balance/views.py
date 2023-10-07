@@ -24,7 +24,7 @@ def home():
 def eliminar(id):
     db = DBManager(RUTA)
     ha_ido_bien = db.borrar(id)
-    # TODO: en lugar de pintar el mensake con su propia plantillam usar un mensaje flash  y volver al listado
+    # TODO: en lugar de pintar el mensaje con su propia plantillam usar un mensaje flash  y volver al listado
     # TODO: un poco más dificil? pedir confirmación antes de eliminar un movimiento:
     # - Incluir un texto con la pregunta
     # - Incluir un botón aceptar que hace la eliminación y vuelve al listado(con mensaje flash)
@@ -72,7 +72,7 @@ def actualizar(id):
                 return redirect(url_for('home'))
             return "Guardar el movimiento"
         else:
-            # TODO: pintar los mensakes de error junto al campo que lo provoca
+            # TODO: pintar los mensajes de error junto al campo que lo provoca
             errores = []
             for key in form.errors:
                 errores.append((key, form.errors[key]))
