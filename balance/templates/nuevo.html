@@ -22,34 +22,49 @@
     DELETE: Delete
 -->
 
-<form action="/nuevo" method="post">
-    <div class="campo-formulario">
-        <label for="fecha">Fecha</label>
-        <input type="date" name="fecha" id="fecha" required>
-    </div>
-    <div class="campo-formulario">
-        <label for="concepto">Concepto</label>
-        <input type="text" name="concepto" id="concepto">
-    </div>
+<form action="/editar/{{ id }}" method="post" novalidate>
+    {{ form.csrf_token }}
+
+    {{ form.id }}
 
     <div class="campo-formulario">
-        <input type="radio" name="tipo" id="ingreso" value="I">
-        <LAbel for="Ingreso">Ingreso</LAbel>
-        <input type="radio" name="tipo" id="gasto" value="G">
-        <LAbel for="Gasto">Gasto</LAbel>
+        {{ form.fecha.label }}
+        {{ form.fecha}}
+        {% if "fecha" in coderror %}
+        <li class="mensaje-error">{{ coderror["fecha"] }}</li>
+        {% endif %}
 
     </div>
 
     <div class="campo-formulario">
-        <label for="cantidad">Cantidad</label>
-        <input type="number" name="cantidad" id="cantidad" min="0.01">
+        {{ form.concepto.label }}
+        {{ form.concepto }}
+        {% if "concepto" in coderror %}
+        <li class="mensaje-error">{{ coderror["concepto"] }}</li>
+        {% endif %}
     </div>
 
+    <div class="campo-formulario">
+        {% for campo in form.tipo %}
+        {{ campo }}
+        {{ campo.label }}
+        {% endfor %}
+        {% if "campo" in coderror %}
+        <li class="mensaje-error">{{ coderror["campo"] }}</li>
+        {% endif %}
+    </div>
 
+    <div class="campo-formulario">
+        {{ form.cantidad.label }}
+        {{ form.cantidad }}
+        {% if "cantidad" in coderror %}
+        <li class="mensaje-error">{{ coderror["cantidad"] }}</li>
+        {% endif %}
+    </div>
 
     <div class="acciones">
-        <button type="submit">enviar </button>
+        {{ form.submit }}
     </div>
-</form>
 
-{% endblock %}
+
+    {% endblock %}

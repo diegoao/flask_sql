@@ -119,3 +119,11 @@ class DBManager:
             conexion.rollback()  # Volver atrás si hay un error
         self.desconectar(conexion)
         return resultado
+
+    def guardar(self):
+
+        # consulta = 'INSERT INTO movimientos (fecha,concepto,tipo,cantidad) VALUES (2023-10-07,Hamburguesa,,24)'
+        conexion, cursor = self.conectar()
+        cursor = conexion.cursor()
+        #  Le pasamos el parámetro que queremos en la consulta
+        # cursor.execute(consulta)
