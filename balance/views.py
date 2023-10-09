@@ -80,21 +80,29 @@ def actualizar(id):
 def crear_movimiento():
     form = MovimientoForm(data=request.form)
     if request.method == 'POST':
-        print('paso1')
-        print('paso2')
-        db = DBManager(RUTA)
-        consulta = 'INSERT INTO movimientos (fecha,concepto,tipo,cantidad) VALUES (?,?,?,?)'
-        parametros = (
-            form.fecha.data,
-            form.concepto.data,
-            form.tipo.data,
-            float(form.cantidad.data)
-        )
-        resultado = db.nuevo(consulta, parametros)
-        if resultado:
-            flash('El movimiento se ha creado correctamente',
-                  category="exito")
+        if form.validate():
+            db = DBManager(RUTA)
+            consulta = 'INSERT INTO movimientos (fecha,concepto,tipo,cantidad) VALUES (?,?,?,?)'
+            parametros = (
+                form.fecha.data,
+                form.concepto.data,
+                form.tipo.data,
+                float(form.cantidad.data)
+            )
+            resultado = db.nuevo(consulta, parametros)
+            if resultado:
+                flash('El movimiento se ha creado correctamente',
+                      category="exito")
+                return redirect(url_for('home'))
+            return "El movimiento no se ha podido crear en la base de datos"
+        else:
+           # TODO: pintar los mensajes de error junto al campo que lo provoca  -> ok
+            errores = []
+            codigoError = {}
+            for key in form.errors:
+                errores.append((key, form.errors[key]))
+                mens = form.errors[key]
+                codigoError[key] = mens[0]
 
-            return redirect(url_for('home'))
-        return "El movimiento no se ha podido crear en la base de datos"
+            return render_template('nuevo.html', form=form, errors=errores, coderror=codigoError)
     return render_template('nuevo.html', form=form)

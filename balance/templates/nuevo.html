@@ -1,30 +1,21 @@
-{% extends "base.html" %}
-
-{% block head_title %}
-{{super()}}: Crear movimiento
-{% endblock head_title %}
-
-
-
-{% block page_title %}
-<h1>Crear nuevo movimiento</h1>
-{% endblock page_title %}
-
+{% extends 'base.html' %}
 
 {% block contenido %}
 
-<!--
-    CRUD: Create, Read, Update, Delete
+{% if errors %}
+<div class="lista-errores">
+    <i style="color: #c92c2c;"></i>
+    Revisa los errores
+    {% for error in errors %}
+    <p>Hay errores en el campo {{ error[0] }}</p>
+    {% endfor %}
+</div>
+{% endif %}
 
-    GET:    Read
-    POST:   Create (delete, update)
-    PUT:    Update
-    DELETE: Delete
--->
+<form action="/nuevo/{{ id }}" method="post" novalidate>
+    {{ form.csrf_token }}
 
-<form action="/nuevo/" method="post" novalidate>
-
-
+    {{ form.id }}
     <div class="campo-formulario">
         {{ form.fecha.label }}
         {{ form.fecha}}
@@ -64,7 +55,10 @@
         {{ form.submit }}
     </div>
 
+</form>
 
+{% endblock contenido %}
 
-
-    {% endblock %}
+{% block page_title %}
+<h1>Nuevo movimiento</h1>
+{% endblock page_title %}
