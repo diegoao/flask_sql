@@ -23,8 +23,14 @@ def home():
 @app.route('/borrar/<int:id>')
 def eliminar(id):
     db = DBManager(RUTA)
+
     ha_ido_bien = db.borrar(id)
-    # TODO: en lugar de pintar en mensaje con su propia plantilla, usar un mensaje flash y volver al listado
+    if ha_ido_bien:
+        flash('El movimiento se ha borrado correctamente',
+              category="exito")
+        return redirect(url_for('home'))
+
+    # TODO: en lugar de pintar en mensaje con su propia plantilla, usar un mensaje flash y volver al listado--ok
     # TODO: un poco más difícil? pedir confirmación antes de eliminar un movimiento:
     #   - Incluir un texto con la pregunta
     #   - Incluir un botón aceptar que hace la eliminación y vuelve al listado (con mensaje flash)
@@ -44,7 +50,7 @@ def actualizar(id):
         form = MovimientoForm(data=request.form)
         if form.validate():
             db = DBManager(RUTA)
-            consulta = 'UPDATE movimientos SET fecha=?, concepto=?, tipo=?, cantidad=? WHERE id=? '
+            consulta = 'UPDATE movimientos SET fecha=?, concepto=?, tipo=?, cantidad=? WHERE id=?'
             parametros = (
                 form.fecha.data,
                 form.concepto.data,
@@ -59,7 +65,7 @@ def actualizar(id):
                 return redirect(url_for('home'))
             return "El movimiento no se ha podido guardar en la base de datos"
         else:
-            # TODO: pintar los mensajes de error junto al campo que lo provoca  -> ok
+           # TODO: pintar los mensajes de error junto al campo que lo provoca  -> ok
             errores = []
             codigoError = {}
             for key in form.errors:
@@ -70,14 +76,25 @@ def actualizar(id):
             return render_template('form_movimiento.html', form=form, id=id, errors=errores, coderror=codigoError)
 
 
-# @app.route('/editar/<str:fecha><str:concepto><str:tipo><float:cantidad>', methods=['GET', 'POST'])
-# def crear_movimiento(fecha, concepto, tipo, cantidad):
-#     # TODO: reutilizar el formulario para crear movimientos nuevos
-#     consulta = 'INSERT INTO movimientos (fecha,concepto,tipo,cantidad) VALUES (?,?,?,?)'
-#     pass
-@app.route('/nuevo')
+@app.route('/nuevo/', methods=['GET', 'POST'])
 def crear_movimiento():
     form = MovimientoForm(data=request.form)
-    db = DBManager(RUTA)
-    sql = 'SELECT id, fecha, concepto, tipo, cantidad FROM movimientos'
+    if request.method == 'POST':
+        print('paso1')
+        print('paso2')
+        db = DBManager(RUTA)
+        consulta = 'INSERT INTO movimientos (fecha,concepto,tipo,cantidad) VALUES (?,?,?,?)'
+        parametros = (
+            form.fecha.data,
+            form.concepto.data,
+            form.tipo.data,
+            float(form.cantidad.data)
+        )
+        resultado = db.nuevo(consulta, parametros)
+        if resultado:
+            flash('El movimiento se ha creado correctamente',
+                  category="exito")
+
+            return redirect(url_for('home'))
+        return "El movimiento no se ha podido crear en la base de datos"
     return render_template('nuevo.html', form=form)

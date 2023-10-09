@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 
+
+
 {% block head_title%}
 {{ super() }}: Inicio
 {% endblock head_title %}
 
 {% block contenido %}
+
 <table class="paper">
     <tr>
         <th class="titulo-tabla">Fecha</th>
@@ -13,6 +16,7 @@
         <th class="titulo-tabla numero">Cant.</th>
         <th class="titulo-tabla acciones">Acciones</th>
     </tr>
+
     {% if movs %}
     {% for m in movs %}
     <tr {% if m.has_errors %} class="error" {% endif %}>

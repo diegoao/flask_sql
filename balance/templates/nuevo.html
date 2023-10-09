@@ -22,10 +22,8 @@
     DELETE: Delete
 -->
 
-<form action="/editar/{{ id }}" method="post" novalidate>
-    {{ form.csrf_token }}
+<form action="/nuevo/" method="post" novalidate>
 
-    {{ form.id }}
 
     <div class="campo-formulario">
         {{ form.fecha.label }}
@@ -65,6 +63,8 @@
     <div class="acciones">
         {{ form.submit }}
     </div>
+
+
 
 
     {% endblock %}
